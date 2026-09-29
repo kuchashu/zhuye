@@ -1,0 +1,1030 @@
+<!doctype html>
+<!-- 画师·苦茶树 · 插画作品集 v2
+     静态单页 · 无后端 · 深底动漫氛围 · 全端自适应
+     作品数据：本文件 <script> 顶部 WORKS 数组（assets/works/ 为压缩后的展示图） -->
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>画师·苦茶树 · 插画作品集</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@700;900&display=swap" rel="stylesheet" />
+  <style>
+    /* ─── tokens · 暗厅画廊 × 动漫氛围 ──────────────────────────────── */
+    :root {
+      color-scheme: dark;
+      --bg:      oklch(0.165 0.012 265);
+      --surface: oklch(0.215 0.014 265);
+      --fg:      oklch(0.94 0.006 95);
+      --muted:   oklch(0.68 0.012 265);
+      --border:  oklch(0.31 0.014 265);
+      --accent:  oklch(0.74 0.17 350);
+      --accent-ink:  oklch(0.2 0.05 350);
+      --deco-1: oklch(0.76 0.16 350);  /* 樱粉 */
+      --deco-2: oklch(0.80 0.12 220);  /* 天青 */
+      --deco-3: oklch(0.66 0.19 300);  /* 幻紫 */
+      --deco-4: oklch(0.82 0.13 85);   /* 暖琥珀 */
+      --accent-soft: color-mix(in oklch, var(--accent) 16%, transparent);
+      --fg-soft:     color-mix(in oklch, var(--fg) 7%, transparent);
+
+      --font-display: 'Noto Serif SC', 'Songti SC', 'STSong', 'SimSun', serif;
+      --font-body:    -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', system-ui, sans-serif;
+      --font-mono:    ui-monospace, 'JetBrains Mono', 'SF Mono', Consolas, monospace;
+
+      --fs-h2: clamp(30px, 3.6vw, 44px);
+      --fs-h3: 21px;
+      --fs-lead: 18px;
+      --fs-body: 16px;
+      --fs-meta: 13px;
+
+      --gap-sm: 12px; --gap-md: 20px; --gap-lg: 32px; --gap-xl: 56px; --gap-2xl: 96px;
+      --container: 1120px; --gutter: 32px;
+      --radius: 10px; --radius-lg: 16px;
+    }
+
+    /* ─── base ─────────────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; }
+    @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+    body {
+      margin: 0; color: var(--fg);
+      font-family: var(--font-body); font-size: var(--fs-body); line-height: 1.6;
+      text-rendering: optimizeLegibility; -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+      /* 彩色动漫氛围：三团低饱和光晕铺满整页，滚动时随之掠过 */
+      background:
+        radial-gradient(900px 620px at 88% -6%, color-mix(in oklch, var(--deco-3) 13%, transparent), transparent 70%),
+        radial-gradient(820px 540px at -12% 28%, color-mix(in oklch, var(--deco-2) 10%, transparent), transparent 70%),
+        radial-gradient(760px 520px at 52% 108%, color-mix(in oklch, var(--deco-1) 9%, transparent), transparent 72%),
+        var(--bg);
+    }
+    img, svg { display: block; max-width: 100%; }
+    a { color: inherit; text-decoration: none; -webkit-tap-highlight-color: transparent; }
+    button, select, input, textarea { font: inherit; color: inherit; }
+    button { cursor: pointer; }
+    [hidden] { display: none !important; }
+    p { text-wrap: pretty; }
+    h2, h3 { text-wrap: balance; }
+    ::selection { background: var(--accent-soft); }
+    :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 2px; }
+    .skip { position: absolute; left: -9999px; top: 12px; z-index: 100; background: var(--surface); padding: 10px 16px; border-radius: var(--radius); }
+    .skip:focus { left: 12px; }
+
+    /* ─── layout primitives ────────────────────────────────────────── */
+    .container { max-width: var(--container); margin-inline: auto; padding-inline: var(--gutter); }
+    .section { padding-block: clamp(56px, 8vw, var(--gap-2xl)); }
+    .section + .section { border-top: 1px solid var(--border); }
+    .narrow { max-width: 860px; }
+    .grid-2-1 { display: grid; grid-template-columns: 2fr 1fr; gap: var(--gap-xl); align-items: start; }
+    .row { display: flex; align-items: center; gap: var(--gap-md); }
+    .row-between { display: flex; align-items: center; justify-content: space-between; gap: var(--gap-md); }
+
+    /* ─── type ─────────────────────────────────────────────────────── */
+    h2 { font-family: var(--font-display); font-size: var(--fs-h2); line-height: 1.14; letter-spacing: -0.01em; margin: 0; }
+    h3 { font-size: var(--fs-h3); font-weight: 600; line-height: 1.35; margin: 0; }
+    .lead { font-size: var(--fs-lead); line-height: 1.65; color: var(--muted); max-width: 58ch; margin: 0; }
+    .eyebrow {
+      font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--accent); margin: 0 0 var(--gap-md);
+    }
+    .meta { font-family: var(--font-mono); font-size: var(--fs-meta); color: var(--muted); }
+
+    /* ─── chrome ───────────────────────────────────────────────────── */
+    .topnav {
+      position: sticky; top: 0; z-index: 40;
+      background: color-mix(in oklch, var(--bg) 84%, transparent);
+      backdrop-filter: blur(12px); border-bottom: 1px solid var(--border);
+    }
+    .topnav-inner { display: flex; align-items: center; justify-content: space-between; gap: var(--gap-md); padding-block: 13px; }
+    .topnav .logo { font-family: var(--font-display); font-size: 19px; font-weight: 700; letter-spacing: 0.04em; }
+    .topnav nav { display: flex; gap: var(--gap-lg); }
+    .topnav nav a { font-size: 14px; color: var(--muted); transition: color 0.18s ease; min-height: 44px; display: inline-flex; align-items: center; }
+    .topnav nav a:hover { color: var(--fg); }
+    .pagefoot { padding-block: var(--gap-xl); border-top: 1px solid var(--border); }
+    .pagefoot .row-between { flex-wrap: wrap; gap: var(--gap-md); }
+    .pagefoot p { margin: 0; font-size: 13px; color: var(--muted); max-width: 62ch; }
+
+    /* ─── buttons ──────────────────────────────────────────────────── */
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      padding: 12px 22px; min-height: 44px; border-radius: var(--radius);
+      border: 1px solid transparent; font-size: 15px; font-weight: 500;
+      transition: transform 0.25s cubic-bezier(0.22, 0.61, 0.36, 1), background 0.18s ease, border-color 0.18s ease, color 0.18s ease;
+    }
+    .btn:active { transform: translateY(1px) !important; }
+    .btn-primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); position: relative; overflow: hidden; }
+    .btn-primary:hover { background: color-mix(in oklch, var(--accent) 88%, black); border-color: color-mix(in oklch, var(--accent) 88%, black); }
+    .btn-primary::after {
+      content: ''; position: absolute; inset: 0; transform: translateX(-120%) skewX(-18deg);
+      background: linear-gradient(105deg, transparent 30%, color-mix(in oklch, var(--fg) 34%, transparent) 50%, transparent 70%);
+    }
+    .btn-primary:hover::after { transform: translateX(120%) skewX(-18deg); transition: transform 0.65s ease; }
+    .btn-secondary { background: transparent; color: var(--fg); border-color: var(--border); }
+    .btn-secondary:hover { border-color: var(--fg); background: var(--fg-soft); }
+
+    /* ─── card / tag / table ───────────────────────────────────────── */
+    .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 28px; }
+    .tag {
+      display: inline-flex; align-items: center; padding: 4px 12px;
+      color: var(--muted); border: 1px solid var(--border); border-radius: 999px; font-size: 12px;
+    }
+    .price-grid { list-style: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: var(--gap-md); margin: 40px 0 0; padding: 0; }
+    .price-card {
+      position: relative; overflow: hidden;
+      background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg);
+      padding: 26px 22px 24px; display: flex; flex-direction: column; gap: 10px;
+    }
+    .price-card::after {
+      content: ''; position: absolute; inset: 0; pointer-events: none;
+      transform: translateX(-130%) skewX(-18deg);
+      background: linear-gradient(105deg, transparent 35%, color-mix(in oklch, var(--deco-1) 20%, transparent) 50%, transparent 65%);
+    }
+    .price-card:hover::after { transform: translateX(130%) skewX(-18deg); transition: transform 0.8s ease; }
+    .price-cat { font-size: 17px; font-weight: 600; }
+    .price-num {
+      font-family: var(--font-display); font-weight: 900;
+      font-size: clamp(32px, 3.6vw, 48px); line-height: 1.1;
+      background: linear-gradient(105deg, var(--deco-1) 8%, var(--deco-3) 50%, var(--deco-2) 92%);
+      background-size: 180% 100%;
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+      animation: sheen 8s ease-in-out infinite alternate;
+    }
+    .price-num i { font-style: normal; font-family: var(--font-body); font-size: 14px; font-weight: 500; color: var(--muted); margin-left: 4px; }
+    .table-note { margin: 18px 0 0; }
+
+    /* ─── hero · 开屏：头像 + 特效名 ───────────────────────────────── */
+    .hero {
+      position: relative; min-height: calc(100svh - 62px);
+      display: grid; align-items: center; overflow: hidden;
+      border-bottom: 1px solid var(--border);
+      --mx: 30%; --my: 40%;
+    }
+    .hero-canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+    .hero-glow {
+      position: absolute; left: var(--mx); top: var(--my); width: 520px; height: 520px;
+      translate: -50% -50%; border-radius: 50%; pointer-events: none;
+      background: radial-gradient(closest-side, var(--accent-soft), transparent 72%);
+      opacity: 0.5;
+    }
+    .hero-inner {
+      position: relative; display: grid; grid-template-columns: auto 1fr;
+      gap: clamp(32px, 5vw, 76px); align-items: center; padding-block: 72px 56px;
+    }
+    .avatar-wrap { position: relative; width: clamp(190px, 24vw, 320px); aspect-ratio: 1; }
+    .avatar-ring {
+      position: absolute; inset: -12px; border-radius: 50%; pointer-events: none;
+      background: conic-gradient(from 0deg, var(--deco-1), var(--deco-2), var(--deco-3), var(--deco-4), var(--deco-1));
+      -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 4px), black calc(100% - 3px));
+      mask: radial-gradient(farthest-side, transparent calc(100% - 4px), black calc(100% - 3px));
+      animation: spin 16s linear infinite; opacity: 0.9;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .avatar {
+      width: 100%; height: 100%; border-radius: 50%; object-fit: cover;
+      border: 1px solid var(--border);
+      box-shadow: 0 18px 64px color-mix(in oklch, var(--deco-3) 32%, transparent);
+    }
+    .hero-copy { min-width: 0; }
+    .hero-copy .eyebrow { margin-bottom: 20px; }
+    .hero-name {
+      font-family: var(--font-display); font-weight: 900;
+      font-size: clamp(64px, 10vw, 138px); line-height: 1.08; letter-spacing: 0.08em;
+      margin: 0 0 18px;
+      filter: drop-shadow(0 12px 36px color-mix(in oklch, var(--deco-3) 30%, transparent));
+    }
+    .hero-name .char {
+      display: inline-block;
+      background: linear-gradient(105deg, var(--deco-1) 8%, var(--deco-3) 50%, var(--deco-2) 92%);
+      background-size: 180% 100%;
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+      animation: sheen 8s ease-in-out infinite alternate;
+      opacity: 0; transform: translateY(0.35em) rotate(3deg); filter: blur(10px);
+      transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.2, 0.7, 0.2, 1), filter 0.8s ease;
+      transition-delay: calc(var(--i) * 130ms + 200ms);
+    }
+    .hero-name.in .char { opacity: 1; transform: none; filter: none; }
+    @keyframes sheen { to { background-position: 100% 0; } }
+    .hero-cta { display: inline-flex; gap: var(--gap-sm); flex-wrap: wrap; margin-top: 30px; }
+    .hero-meta { margin: 40px 0 0; }
+    .scroll-line { width: 1px; height: 40px; margin: 14px 0 0; background: linear-gradient(var(--muted), transparent); transform-origin: top; }
+
+    /* ─── marquee · 精选滚动带 ─────────────────────────────────────── */
+    .marquee-sec { border-bottom: 1px solid var(--border); padding-block: 34px; }
+    .marquee-head { margin-bottom: 22px; }
+    .marquee-head .eyebrow, .marquee-head .meta { margin: 0; }
+    /* black 仅作 alpha 遮罩占位色，非 UI 颜色 */
+    .marquee { overflow: hidden; -webkit-mask-image: linear-gradient(90deg, transparent, black 7%, black 93%, transparent); mask-image: linear-gradient(90deg, transparent, black 7%, black 93%, transparent); }
+    .marquee-track { display: flex; width: max-content; animation: marquee 52s linear infinite; }
+    .marquee:hover .marquee-track, .marquee:focus-within .marquee-track { animation-play-state: paused; }
+    @keyframes marquee { to { transform: translateX(-50%); } }
+    .m-card { margin-right: var(--gap-md); flex: none; cursor: pointer; }
+    .m-card img { height: 210px; width: auto; max-width: none; border-radius: var(--radius-lg); border: 1px solid var(--border); transition: border-color 0.22s ease; }
+    .m-card:hover img, .m-card:focus-visible img { border-color: var(--muted); }
+    .m-card > p { margin: 10px 0 0; }
+
+    /* ─── works · 作品集（叠放缩略图 → 点击展开）────────────────── */
+    .work-stack {
+      display: flex; align-items: center; gap: 24px; width: 100%;
+      margin-top: 36px; padding: 18px 22px; text-align: left;
+      background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg);
+      transition: border-color 0.2s ease;
+    }
+    .work-stack:hover { border-color: var(--muted); }
+    .stack-thumbs { display: flex; align-items: center; flex: 1; min-width: 0; padding-block: 10px; }
+    .stack-thumbs img {
+      position: relative; width: 72px; height: 94px; object-fit: cover;
+      border-radius: 10px; border: 1px solid var(--border);
+      box-shadow: 0 8px 22px color-mix(in oklch, var(--bg) 62%, transparent);
+      transition: transform 0.25s cubic-bezier(0.2, 0.7, 0.2, 1);
+    }
+    .stack-thumbs img + img { margin-left: -46px; }
+    .stack-thumbs img:nth-child(odd) { transform: rotate(-3deg); }
+    .stack-thumbs img:nth-child(even) { transform: rotate(2.5deg) translateY(3px); }
+    .stack-thumbs img:hover { transform: rotate(0deg) translateY(-8px) scale(1.06); z-index: 5; }
+    .stack-label { flex: none; display: flex; flex-direction: column; gap: 3px; }
+    .stack-label strong { font-size: 15px; font-weight: 600; }
+    .stack-label .meta { margin: 0; }
+    .work-stack .chev { flex: none; color: var(--muted); }
+    .works-collapse { display: flex; justify-content: center; margin-top: 6px; }
+    .masonry { columns: 3; column-gap: var(--gap-md); }
+    .work { break-inside: avoid; margin: 0 0 var(--gap-md); cursor: pointer; }
+    .slot-img { width: 100%; height: auto; border-radius: var(--radius-lg); border: 1px solid var(--border); transition: border-color 0.22s ease; }
+    .work:hover .slot-img, .work:focus-visible .slot-img { border-color: var(--muted); }
+    .work-cap { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-top: 10px; }
+    .work-title { font-size: 14px; color: var(--muted); transition: color 0.18s ease; }
+    .work:hover .work-title, .work:focus-visible .work-title { color: var(--fg); }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
+    .work.anim { animation: fadeUp 0.55s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+
+    /* ─── about · 关于 ─────────────────────────────────────────────── */
+    .about p { color: var(--muted); margin: 0 0 16px; max-width: 56ch; }
+    .about-tags { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 24px; }
+    .about-fig .slot-img { cursor: pointer; }
+    .about-fig .work-title { display: block; margin-top: 10px; font-size: 14px; color: var(--muted); transition: color 0.18s ease; }
+    .about-fig .slot-img:hover + .work-title { color: var(--fg); }
+
+    /* ─── commission ways · 约稿方式 ───────────────────────────────── */
+    .ch-list { border-bottom: 1px solid var(--border); margin-top: 32px; }
+    .ch-row { display: grid; grid-template-columns: 180px 1fr; gap: 24px; padding: 26px 0; border-top: 1px solid var(--border); align-items: baseline; }
+    .ch-row dt { font-family: var(--font-mono); font-size: 13.5px; color: var(--muted); margin: 0; }
+    .ch-row dd { margin: 0; font-size: 18.5px; }
+    .ch-note { margin: 18px 0 0; }
+    .ch-link {
+      background: linear-gradient(105deg, var(--deco-1) 8%, var(--deco-3) 50%, var(--deco-2) 92%);
+      background-size: 180% 100%;
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+      animation: sheen 7s ease-in-out infinite alternate;
+      border-bottom: 1px solid var(--border); padding-bottom: 2px;
+      transition: border-color 0.18s ease, filter 0.18s ease;
+    }
+    .ch-link:hover { border-color: var(--fg); filter: brightness(1.18); }
+
+    /* ─── music player · 唱片播放器 ────────────────────────────────── */
+    .player {
+      position: fixed; z-index: 70; left: 0; top: 0;
+      width: 58px; height: 58px; padding: 0; border: 0;
+      background: transparent; touch-action: none;
+      user-select: none; -webkit-user-select: none;
+    }
+    .vinyl-disc {
+      position: absolute; inset: 0; border-radius: 50%;
+      background:
+        repeating-radial-gradient(circle at 50% 50%, color-mix(in oklch, var(--fg) 6%, transparent) 0 1.5px, transparent 1.5px 4px),
+        radial-gradient(circle at 50% 50%, color-mix(in oklch, var(--surface) 82%, black) 0 99%, transparent 100%);
+      box-shadow: 0 12px 34px color-mix(in oklch, var(--deco-3) 36%, transparent), 0 0 0 1px var(--border);
+      animation: spin 4s linear infinite; animation-play-state: paused;
+      transition: scale 0.2s ease;
+    }
+    .player:active .vinyl-disc { scale: 0.95; }
+    .player.playing .vinyl-disc { animation-play-state: running; }
+    .vinyl-label {
+      position: absolute; inset: 31%; border-radius: 50%;
+      display: grid; place-items: center; color: var(--accent-ink);
+      background: radial-gradient(circle at 38% 32%, color-mix(in oklch, var(--accent) 84%, var(--fg)), var(--accent) 60%);
+    }
+    .player:not(.playing) .vinyl-label { opacity: 0.82; }
+
+    .player-panel {
+      position: fixed; z-index: 70; left: 0; top: 0;
+      width: min(280px, calc(100vw - 24px)); padding: 16px;
+      border-radius: var(--radius-lg); border: 1px solid var(--border);
+      background: color-mix(in oklch, var(--bg) 92%, transparent);
+      backdrop-filter: blur(14px);
+      box-shadow: 0 24px 64px color-mix(in oklch, var(--bg) 62%, transparent);
+      opacity: 0; visibility: hidden; translate: 0 8px;
+      transition: opacity 0.25s ease, translate 0.25s cubic-bezier(0.2, 0.7, 0.2, 1), visibility 0.25s ease;
+    }
+    .player-panel.open { opacity: 1; visibility: visible; translate: 0 0; }
+    .player-panel > .meta { margin: 0; }
+    .pp-title { display: block; font-size: 15px; margin-top: 2px; }
+    .pp-tracks { list-style: none; margin: 14px 0 0; padding: 0; border-top: 1px solid var(--border); }
+    .pp-track {
+      width: 100%; display: flex; align-items: center; gap: 10px;
+      padding: 11px 4px; min-height: 44px; background: none; border: 0;
+      border-bottom: 1px solid var(--border); color: var(--muted);
+      font-size: 14px; text-align: left; transition: color 0.18s ease;
+    }
+    .pp-track:hover { color: var(--fg); }
+    .pp-track.is-active { color: var(--fg); font-weight: 600; }
+    .pp-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--border); flex: none; }
+    .pp-track.is-active .pp-dot { background: var(--accent); }
+    .eq { display: none; margin-left: auto; align-items: flex-end; gap: 2px; height: 12px; }
+    .pp-track.is-active .eq { display: flex; }
+    .eq span { width: 3px; height: 4px; border-radius: 1px; background: color-mix(in oklch, var(--fg) 75%, transparent); }
+    .pp-track.is-playing .eq span { animation: eqb 0.9s ease-in-out infinite; }
+    .eq span:nth-child(2) { animation-delay: 0.15s; }
+    .eq span:nth-child(3) { animation-delay: 0.3s; }
+    @keyframes eqb { 0%, 100% { height: 4px; } 50% { height: 12px; } }
+    .pp-ctl { margin-top: 14px; display: flex; align-items: center; gap: 12px; }
+    .pp-toggle {
+      flex: none; padding: 9px 18px; min-height: 44px; border-radius: 999px;
+      border: 1px solid var(--border); background: transparent; color: var(--fg);
+      font-size: 13px; transition: border-color 0.18s ease, background 0.18s ease;
+    }
+    .pp-toggle:hover { border-color: var(--fg); background: var(--fg-soft); }
+    .pp-vol { flex: 1; display: flex; align-items: center; gap: 10px; color: var(--muted); }
+    .pp-vol input { -webkit-appearance: none; appearance: none; flex: 1; height: 4px; border-radius: 2px; background: var(--fg-soft); }
+    .pp-vol input::-webkit-slider-thumb { -webkit-appearance: none; width: 16px; height: 16px; border-radius: 50%; background: var(--accent); border: 0; }
+    .pp-vol input::-moz-range-thumb { width: 16px; height: 16px; border-radius: 50%; background: var(--accent); border: 0; }
+    .pp-vol .meta { min-width: 38px; text-align: right; }
+    @media (prefers-reduced-motion: reduce) {
+      .vinyl-disc { animation: none; }
+      .eq span { animation: none !important; }
+      .player-panel { transition: none; translate: 0 0; }
+    }
+
+    /* ─── lightbox / cursor / reveal ───────────────────────────────── */
+    .lb { position: fixed; inset: 0; z-index: 60; display: grid; place-items: center; visibility: hidden; opacity: 0; transition: opacity 0.25s ease, visibility 0.25s ease; }
+    .lb.open { visibility: visible; opacity: 1; }
+    .lb-backdrop { position: absolute; inset: 0; background: color-mix(in oklch, var(--bg) 78%, transparent); backdrop-filter: blur(10px); border: 0; padding: 0; cursor: default; }
+    .lb-inner { position: relative; z-index: 1; max-width: 92vw; }
+    .lb-inner img { max-height: 68vh; width: auto; max-width: 92vw; height: auto; margin-inline: auto; border-radius: var(--radius-lg); border: 1px solid var(--border); }
+    .lb-cap { display: flex; justify-content: space-between; align-items: baseline; gap: 20px; margin-top: 14px; flex-wrap: wrap; }
+    .lb-cap strong { font-weight: 600; }
+    .lb-close { position: absolute; top: 12px; right: 12px; width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--border); background: color-mix(in oklch, var(--bg) 72%, transparent); backdrop-filter: blur(6px); color: var(--fg); display: grid; place-items: center; transition: border-color 0.18s ease; }
+    .lb-close:hover { border-color: var(--fg); }
+    .cursor-dot, .cursor-ring { position: fixed; left: 0; top: 0; z-index: 90; pointer-events: none; opacity: 0; translate: -50% -50%; }
+    .cursor-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--fg); }
+    .cursor-ring { width: 36px; height: 36px; border: 1px solid color-mix(in oklch, var(--fg) 45%, transparent); border-radius: 50%; display: grid; place-items: center; transition: width 0.22s ease, height 0.22s ease, background 0.22s ease, border-color 0.22s ease; }
+    .cursor-label { font-family: var(--font-mono); font-size: 11px; color: var(--fg); opacity: 0; transition: opacity 0.18s ease; }
+    html.cursor-on .cursor-dot, html.cursor-on .cursor-ring { opacity: 1; }
+    html.cursor-on, html.cursor-on * { cursor: none !important; }
+    .cursor-ring.is-hover { width: 54px; height: 54px; background: color-mix(in oklch, var(--fg) 8%, transparent); }
+    .cursor-ring.is-view { width: 76px; height: 76px; background: color-mix(in oklch, var(--bg) 70%, transparent); backdrop-filter: blur(4px); border-color: var(--fg); }
+    .cursor-ring.is-view .cursor-label { opacity: 1; }
+
+    .reveal { opacity: 0; transform: translateY(26px); transition: opacity 0.7s ease var(--d, 0s), transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) var(--d, 0s); }
+    .reveal.in-view { opacity: 1; transform: none; }
+
+    /* ─── responsive ───────────────────────────────────────────────── */
+    @media (max-width: 1080px) { .masonry { columns: 2; } }
+    @media (max-width: 920px) {
+      .grid-2-1 { grid-template-columns: 1fr; }
+      .topnav nav { display: none; }
+      .m-card img { height: 160px; }
+      .ch-row { grid-template-columns: 132px 1fr; gap: 16px; }
+    }
+    @media (max-width: 760px) {
+      .hero-inner { grid-template-columns: 1fr; justify-items: center; text-align: center; padding-block: 56px 48px; gap: 36px; }
+      .avatar-wrap { width: clamp(160px, 44vw, 220px); }
+      .hero-copy .lead { margin-inline: auto; }
+      .hero-cta { justify-content: center; }
+      .scroll-line { margin-inline: auto; }
+    }
+    @media (max-width: 600px) {
+      .masonry { columns: 1; }
+      .m-card img { height: 140px; }
+      .price-card { padding: 18px 16px 16px; }
+      .work-stack { flex-wrap: wrap; gap: 14px; padding: 16px; }
+      .stack-thumbs { order: 2; flex-basis: 100%; }
+      .stack-thumbs img { width: 54px; height: 70px; }
+      .stack-thumbs img + img { margin-left: -40px; }
+    }
+    @media (hover: none) { .hero-glow { display: none; } }
+
+    /* ─── reduced motion ───────────────────────────────────────────── */
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .char { opacity: 1; transform: none; filter: none; transition: none; animation: none; }
+      .marquee-track { animation: none; }
+      .marquee { overflow-x: auto; }
+      .reveal, .work.anim { opacity: 1; transform: none; animation: none; transition: none; }
+      .hero-glow { display: none; }
+      .avatar-ring { animation: none; }
+      .scroll-line { animation: none; }
+      .cursor-dot, .cursor-ring { display: none; }
+      html.cursor-on, html.cursor-on * { cursor: auto !important; }
+      .price-num, .ch-link { animation: none; }
+      .price-card::after { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip" href="#works">跳到作品</a>
+  <div class="cursor-dot" aria-hidden="true"></div>
+  <div class="cursor-ring" aria-hidden="true"><span class="cursor-label">查看</span></div>
+
+  <header class="topnav" data-od-id="topnav">
+    <div class="container topnav-inner">
+      <span class="logo">画师·苦茶树</span>
+      <nav aria-label="页面导航">
+        <a href="#works">作品</a>
+        <a href="#about">关于</a>
+        <a href="#pricing">稿价</a>
+      </nav>
+      <a class="btn btn-secondary magnet" href="#commission" data-od-id="nav-commission">开始约稿</a>
+    </div>
+  </header>
+
+  <main id="content">
+    <!-- ① 开屏：左头像 + 右特效名 -->
+    <section class="hero" id="top" data-od-id="hero">
+      <canvas class="hero-canvas" id="heroCanvas" aria-hidden="true"></canvas>
+      <div class="hero-glow" aria-hidden="true"></div>
+      <div class="container hero-inner">
+        <div class="avatar-wrap" data-od-id="hero-avatar">
+          <div class="avatar-ring" aria-hidden="true"></div>
+          <img class="avatar" src="assets/avatar.jpg" alt="苦茶树的头像" width="480" height="480" fetchpriority="high" />
+        </div>
+        <div class="hero-copy">
+          <p class="eyebrow">画师 · 苦茶树 · 接稿开放</p>
+          <h1 class="hero-name" id="heroName">苦茶树</h1>
+          <p class="lead">专注美少女动漫角色 —— 头像、半身、全身立绘与场景插画，也接 Live2D 相关业务。</p>
+          <div class="hero-cta">
+            <a class="btn btn-primary magnet" href="#works" data-od-id="hero-cta-works">查看作品</a>
+            <a class="btn btn-secondary magnet" href="#commission" data-od-id="hero-cta-commission">约稿方式</a>
+          </div>
+          <p class="meta hero-meta">SCROLL · 向下探索</p>
+          <div class="scroll-line" aria-hidden="true"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ② 精选滚动带 -->
+    <section class="marquee-sec" data-od-id="marquee" aria-label="精选作品自动轮播">
+      <div class="container row-between marquee-head">
+        <p class="eyebrow">精选 SELECTED</p>
+        <p class="meta">自动轮播 · 悬停暂停</p>
+      </div>
+      <div class="marquee">
+        <div class="marquee-track" id="marqueeTrack"></div>
+      </div>
+    </section>
+
+    <!-- ③ 作品集（叠放缩略图 → 点击展开）-->
+    <section class="section" id="works" data-od-id="works">
+      <div class="container">
+        <div class="reveal">
+          <p class="eyebrow">作品集 WORKS</p>
+          <h2>美少女们，都在这里。</h2>
+        </div>
+        <button class="work-stack reveal" id="workStack" aria-expanded="false" aria-controls="worksGrid" data-od-id="work-stack">
+          <span class="stack-thumbs" id="stackThumbs" aria-hidden="true"></span>
+          <span class="stack-label">
+            <strong>展开作品集</strong>
+            <span class="meta" id="stackCount"></span>
+          </span>
+          <svg class="chev" width="20" height="20" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 6l5 5 5-5"/></svg>
+        </button>
+        <div class="masonry" id="worksGrid" hidden></div>
+        <div class="works-collapse" id="worksCollapse" hidden>
+          <button class="btn btn-secondary" id="worksCollapseBtn" type="button">收起作品集</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ④ 关于 -->
+    <section class="section" id="about" data-od-id="about">
+      <div class="container grid-2-1 about">
+        <div class="reveal">
+          <p class="eyebrow">关于 ABOUT</p>
+          <h2>画画的人，认真接稿。</h2>
+          <p style="margin-top:20px">这里是苦茶树，全职画师，画了三四年，主接女性角色，擅长插画。</p>
+          <p>作画习惯先出草图三选一，定稿后再深入刻画；特点是上色比勾线快。常用工具：CSP、PS。</p>
+          <div class="about-tags">
+            <span class="meta" style="margin-right:6px">常驻平台</span>
+            <span class="tag">B站</span><span class="tag">米画师</span>
+          </div>
+        </div>
+        <figure class="about-fig reveal" style="--d:.12s; margin:0" data-od-id="about-work">
+          <img class="slot-img" id="aboutWork" src="assets/works/work-19.jpg" alt="作品：19" width="1076" height="1280" loading="lazy" decoding="async" data-id="19" role="button" tabindex="0" aria-label="查看第 19 件作品" />
+          <span class="work-title">作品：19（点击查看大图）</span>
+        </figure>
+      </div>
+    </section>
+
+    <!-- ⑤ 稿价 -->
+    <section class="section" id="pricing" data-od-id="pricing">
+      <div class="container">
+        <div class="reveal">
+          <p class="eyebrow">稿价 PRICING</p>
+          <p class="lead" style="margin-top:16px">以下为起步价（RMB），最终按复杂度与用途报价；商用授权与加急另议。</p>
+        </div>
+        <ul class="price-grid reveal" data-od-id="price-grid">
+          <li class="price-card"><span class="price-cat">头像</span><span class="price-num">¥300<i>起</i></span></li>
+          <li class="price-card"><span class="price-cat">半身</span><span class="price-num">¥600<i>起</i></span></li>
+          <li class="price-card"><span class="price-cat">全身立绘</span><span class="price-num">¥900<i>起</i></span></li>
+          <li class="price-card"><span class="price-cat">插画</span><span class="price-num">¥1000<i>起</i></span></li>
+          <li class="price-card"><span class="price-cat">Live2D 业务</span><span class="price-num">需商议</span></li>
+        </ul>
+        <p class="meta table-note">* 起步价对应标准规格；精细设计、商用授权、加急与多轮修改按需另计，Live2D 按项目商议。</p>
+      </div>
+    </section>
+
+    <!-- ⑥ 约稿方式 -->
+    <section class="section" id="commission" data-od-id="commission">
+      <div class="container narrow">
+        <p class="eyebrow reveal">约稿方式 CONTACT</p>
+        <dl class="ch-list reveal" data-od-id="channel-list">
+          <div class="ch-row">
+            <dt>米画师</dt>
+            <dd><a class="ch-link" href="https://www.mihuashi.com/profiles/73625" target="_blank" rel="noopener">苦茶树 · mihuashi.com/profiles/73625 ↗</a></dd>
+          </div>
+          <div class="ch-row">
+            <dt>B站（哔哩哔哩）</dt>
+            <dd>ID：每天画画的苦茶树 · <a class="ch-link" href="https://www.mihuashi.com/profiles/73625" target="_blank" rel="noopener">主页链接 ↗</a></dd>
+          </div>
+          <div class="ch-row">
+            <dt>邮箱</dt>
+            <dd><a class="ch-link" href="mailto:312669093@qq.com">312669093@qq.com</a></dd>
+          </div>
+        </dl>
+        <p class="meta ch-note">* 交易流程与退款规则以与画师的约定为准。</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="pagefoot" data-od-id="footer">
+    <div class="container row-between">
+      <p>© <span id="yr">2026</span> 画师·苦茶树 · 插画作品集</p>
+      <p class="meta">B站 / 米画师 / 邮箱 · 详见「约稿方式」</p>
+    </div>
+  </footer>
+
+  <!-- 唱片播放器 -->
+  <button class="player" id="player" aria-label="播放音乐" aria-expanded="false" data-od-id="music-player">
+    <span class="vinyl-disc" aria-hidden="true"></span>
+    <span class="vinyl-label" aria-hidden="true">
+      <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><circle cx="5.4" cy="12.2" r="2.2"/><rect x="6.9" y="2.2" width="1.5" height="10.2" rx="0.75"/><path d="M6.9 2.2l6.4-1.4v2l-6.4 1.4z"/></svg>
+    </span>
+  </button>
+  <div class="player-panel" id="playerPanel" role="region" aria-label="音乐播放器" data-od-id="music-panel">
+    <p class="meta">NOW PLAYING</p>
+    <strong class="pp-title" id="ppTitle"></strong>
+    <ul class="pp-tracks" id="ppTracks"></ul>
+    <div class="pp-ctl">
+      <button class="pp-toggle" id="ppToggle" aria-label="暂停音乐">暂停</button>
+      <div class="pp-vol">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M8 2.5 4.5 5.5H2v5h2.5L8 13.5zM10.5 5.8a3.4 3.4 0 0 1 0 4.4M12.4 3.8a6.2 6.2 0 0 1 0 8.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <input type="range" id="ppVol" min="0" max="100" value="20" aria-label="音量" />
+        <span class="meta" id="ppVolVal">20%</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 灯箱 -->
+  <div class="lb" id="lb" role="dialog" aria-modal="true" aria-hidden="true" aria-label="作品预览" data-od-id="lightbox">
+    <button class="lb-backdrop" data-lb-close tabindex="-1" aria-label="关闭预览（点击背景）"></button>
+    <figure class="lb-inner" style="margin:0">
+      <div id="lbSlot"></div>
+      <figcaption class="lb-cap" id="lbCap"></figcaption>
+      <button class="lb-close" data-lb-close aria-label="关闭预览">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 3l10 10M13 3L3 13"/></svg>
+      </button>
+    </figure>
+  </div>
+
+  <script>
+    /* ═══ 作品数据（按创作时间倒序）══════════════════════════════
+       file   = assets/works/ 下的压缩展示图（原始大图在 树一点合集/）
+       w / h  = 展示图真实像素，用于占位防抖动
+       title  = 作品名（来自原文件名）；
+       需要换头像：替换 assets/avatar.jpg（正方形）即可 */
+    const WORKS = [
+      { id: 1,  title: 'mon',        file: 'work-01.jpg', w: 985,  h: 1280 },
+      { id: 2,  title: 'fufu2',      file: 'work-02.jpg', w: 985,  h: 1280 },
+      { id: 3,  title: '玉桂1',      file: 'work-03.jpg', w: 986,  h: 1280 },
+      { id: 4,  title: '荣',         file: 'work-04.jpg', w: 985,  h: 1280 },
+      { id: 5,  title: '面包',       file: 'work-05.jpg', w: 985,  h: 1280 },
+      { id: 6,  title: 'by',         file: 'work-06.jpg', w: 985,  h: 1280 },
+      { id: 7,  title: '空2',        file: 'work-07.jpg', w: 986,  h: 1280 },
+      { id: 8,  title: 'yuji',       file: 'work-08.jpg', w: 985,  h: 1280 },
+      { id: 9,  title: '沙包3',      file: 'work-09.jpg', w: 985,  h: 1280 },
+      { id: 10, title: 'yoyo',       file: 'work-10.jpg', w: 985,  h: 1280 },
+      { id: 11, title: 'ni2',        file: 'work-11.jpg', w: 985,  h: 1280 },
+      { id: 12, title: '舟鱼1',      file: 'work-12.jpg', w: 985,  h: 1280 },
+      { id: 13, title: '浴室彪',     file: 'work-13.jpg', w: 985,  h: 1280 },
+      { id: 14, title: '芙蕾雅',     file: 'work-14.jpg', w: 985,  h: 1280 },
+      { id: 15, title: '艾尔',       file: 'work-15.jpg', w: 985,  h: 1280 },
+      { id: 16, title: '璃沙2',      file: 'work-16.jpg', w: 985,  h: 1280 },
+      { id: 17, title: '璃花2',      file: 'work-17.jpg', w: 985,  h: 1280 },
+      { id: 18, title: '霍克森林魔女', file: 'work-18.jpg', w: 1022, h: 1280 },
+      { id: 19, title: '奈叶头2',    file: 'work-19.jpg', w: 1076, h: 1280 },
+    ];
+
+    const $  = (s, c) => (c || document).querySelector(s);
+    const $$ = (s, c) => Array.from((c || document).querySelectorAll(s));
+    const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const finePtr = matchMedia('(pointer: fine)').matches;
+    const pad2 = n => String(n).padStart(2, '0');
+
+    /* ─── 作品渲染（叠放缩略图 → 点击展开；大图展开时才加载）───
+       图注统一用编号「作品：N」，不显示作品名称 */
+    const grid = $('#worksGrid'), stackBtn = $('#workStack'), stackThumbs = $('#stackThumbs'),
+          stackCount = $('#stackCount'), collapseWrap = $('#worksCollapse'), collapseBtn = $('#worksCollapseBtn');
+    let worksRendered = false;
+    function cardHTML(w) {
+      return `<figure class="work" role="button" tabindex="0" data-id="${w.id}" data-od-id="work-${pad2(w.id)}" aria-label="查看第 ${w.id} 件作品">
+        <img class="slot-img" src="assets/works/${w.file}" alt="作品：${w.id} · 插画作品" width="${w.w}" height="${w.h}" loading="lazy" decoding="async" />
+        <figcaption class="work-cap"><span class="work-title">作品：${w.id}</span></figcaption>
+      </figure>`;
+    }
+    function renderWorks() {
+      if (worksRendered) return;
+      grid.innerHTML = WORKS.map(cardHTML).join('');
+      $$('.work', grid).forEach((el, i) => {
+        el.style.animationDelay = `${Math.min(i, 8) * 45}ms`;
+        el.classList.add('anim');
+      });
+      worksRendered = true;
+    }
+    /* 叠放缩略图：常驻轻量 thumb 图（每张约 10KB），点击整条展开 */
+    stackThumbs.innerHTML = WORKS.map(w =>
+      `<img src="assets/works/thumb-${pad2(w.id)}.jpg" alt="" width="${Math.round(94 * w.w / w.h)}" height="94" loading="lazy" decoding="async" />`
+    ).join('');
+    stackCount.textContent = `共 ${WORKS.length} 件 · 点击展开`;
+    function setWorksOpen(open) {
+      stackBtn.setAttribute('aria-expanded', String(open));
+      if (open) {
+        renderWorks();
+        grid.hidden = false; collapseWrap.hidden = false; stackBtn.hidden = true;
+      } else {
+        grid.hidden = true; collapseWrap.hidden = true; stackBtn.hidden = false;
+        stackBtn.focus();
+      }
+    }
+    stackBtn.addEventListener('click', () => setWorksOpen(true));
+    collapseBtn.addEventListener('click', () => setWorksOpen(false));
+    /* 「查看作品」等锚点跳到作品集时自动展开 */
+    document.addEventListener('click', e => {
+      if (e.target.closest('a[href="#works"]') && grid.hidden) setWorksOpen(true);
+    });
+
+    const track = $('#marqueeTrack');
+    const top6 = WORKS.slice(0, 6);
+    track.innerHTML = top6.concat(top6).map((w, i) => {
+      const dup = i >= 6; /* 第二份仅为无缝循环占位，不进入 Tab 序 */
+      return `<div class="m-card" role="button" tabindex="${dup ? -1 : 0}" data-id="${w.id}" data-od-id="marquee-${pad2(w.id)}${dup ? '-dup' : ''}" aria-label="查看第 ${w.id} 件作品"${dup ? ' aria-hidden="true"' : ''}>
+        <img src="assets/works/${w.file}" alt="" width="${w.w}" height="${w.h}" loading="lazy" decoding="async" />
+        <p class="meta">作品：${w.id}</p>
+      </div>`;
+    }).join('');
+
+    /* 「关于」配图与作品卡共用灯箱 */
+    $('#aboutWork').addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openLB('19'); }
+    });
+
+    /* ─── 灯箱 ─── */
+    const lb = $('#lb'), lbSlot = $('#lbSlot'), lbCap = $('#lbCap');
+    let lastFocus = null;
+    function openLB(id) {
+      const w = WORKS.find(x => x.id === Number(id));
+      if (!w) return;
+      lbSlot.innerHTML = `<img src="assets/works/${w.file}" alt="作品：${w.id} · 大图" width="${w.w}" height="${w.h}" decoding="async" />`;
+      lbCap.innerHTML = `<strong>作品：${w.id}</strong><span class="meta">${pad2(w.id)} / ${pad2(WORKS.length)}</span>`;
+      lastFocus = document.activeElement;
+      lb.classList.add('open');
+      lb.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+      $('.lb-close', lb).focus();
+    }
+    function closeLB() {
+      lb.classList.remove('open');
+      lb.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+      if (lastFocus) lastFocus.focus();
+    }
+    document.addEventListener('click', e => {
+      const card = e.target.closest('.work, .m-card');
+      if (card) { openLB(card.dataset.id); return; }
+      if (e.target.closest('[data-lb-close]')) closeLB();
+    });
+    document.addEventListener('keydown', e => {
+      const card = e.target.closest && e.target.closest('.work, .m-card');
+      if (card && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); openLB(card.dataset.id); }
+      if (e.key === 'Escape' && lb.classList.contains('open')) closeLB();
+    });
+
+    /* ─── 开屏：分字入场（特效名）─── */
+    const name = $('#heroName');
+    if (!reduced) {
+      name.innerHTML = [...name.textContent.trim()].map((c, i) => `<span class="char" style="--i:${i}">${c}</span>`).join('');
+      requestAnimationFrame(() => requestAnimationFrame(() => name.classList.add('in')));
+    }
+
+    /* ─── 滚动入场 ─── */
+    const reveals = $$('.reveal');
+    if (reduced) {
+      reveals.forEach(el => el.classList.add('in-view'));
+    } else {
+      const io = new IntersectionObserver(es => es.forEach(en => {
+        if (en.isIntersecting) { en.target.classList.add('in-view'); io.unobserve(en.target); }
+      }), { threshold: 0.12 });
+      reveals.forEach(el => io.observe(el));
+    }
+
+    /* ─── 开屏彩色浮光（bokeh 氛围背景）─── */
+    (function initCanvas() {
+      const hero = $('.hero'), cv = $('#heroCanvas');
+      if (!cv || !cv.getContext) return;
+      const ctx = cv.getContext('2d');
+      const cs = getComputedStyle(document.documentElement);
+      const HUES = ['--deco-1', '--deco-2', '--deco-3', '--deco-4'].map(v => cs.getPropertyValue(v).trim()).filter(Boolean);
+      if (!HUES.length) return;
+      const col = (h, a) => h.replace(')', ` / ${a})`);
+      let W = 0, H = 0, blobs = [], running = true, raf = null;
+      const ptr = { x: -1e5, y: -1e5 };
+
+      function build() {
+        const n = Math.max(16, Math.min(42, Math.round(W * H / 24000)));
+        blobs = Array.from({ length: n }, () => ({
+          x: Math.random() * W, y: Math.random() * H,
+          r: 6 + Math.pow(Math.random(), 1.6) * 84,
+          c: HUES[(Math.random() * HUES.length) | 0],
+          a: 0.05 + Math.random() * 0.10,
+          vy: -(0.04 + Math.random() * 0.12),
+          vx: (Math.random() - 0.5) * 0.08,
+          ph: Math.random() * 6.28, tw: 0.4 + Math.random() * 0.8,
+        }));
+      }
+      function resize() {
+        const r = hero.getBoundingClientRect();
+        const dpr = Math.min(devicePixelRatio || 1, 1.75);
+        W = r.width; H = r.height;
+        cv.width = W * dpr; cv.height = H * dpr;
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        build();
+        if (reduced) drawStatic();
+      }
+      function drawBlob(b, t, mouse) {
+        let x = b.x, y = b.y;
+        if (mouse) {
+          const dx = x - ptr.x, dy = y - ptr.y, d = Math.hypot(dx, dy);
+          if (d < 150 && d > 0.001) { const f = (1 - d / 150) * 26; x += dx / d * f; y += dy / d * f; }
+        }
+        const a = b.a * (0.75 + 0.25 * Math.sin(t * 0.001 * b.tw + b.ph));
+        const g = ctx.createRadialGradient(x, y, 0, x, y, b.r);
+        g.addColorStop(0, col(b.c, a));
+        g.addColorStop(0.55, col(b.c, a * 0.45));
+        g.addColorStop(1, col(b.c, 0));
+        ctx.fillStyle = g;
+        ctx.beginPath(); ctx.arc(x, y, b.r, 0, 6.2832); ctx.fill();
+      }
+      function drawStatic() {
+        ctx.clearRect(0, 0, W, H);
+        ctx.globalCompositeOperation = 'lighter';
+        blobs.forEach(b => drawBlob(b, 1200, false));
+        ctx.globalCompositeOperation = 'source-over';
+      }
+      function frame(t) {
+        if (!running) { raf = null; return; }
+        ctx.clearRect(0, 0, W, H);
+        ctx.globalCompositeOperation = 'lighter';
+        for (const b of blobs) {
+          b.y += b.vy; b.x += b.vx + Math.sin(t * 0.0004 + b.ph) * 0.12;
+          if (b.y < -b.r) { b.y = H + b.r; b.x = Math.random() * W; }
+          if (b.x < -b.r) b.x = W + b.r; else if (b.x > W + b.r) b.x = -b.r;
+          drawBlob(b, t, true);
+        }
+        ctx.globalCompositeOperation = 'source-over';
+        raf = requestAnimationFrame(frame);
+      }
+      function play() { if (!raf && running && !reduced && !document.hidden) raf = requestAnimationFrame(frame); }
+      resize();
+      addEventListener('resize', () => requestAnimationFrame(resize));
+      hero.addEventListener('pointermove', e => {
+        const r = cv.getBoundingClientRect();
+        ptr.x = e.clientX - r.left; ptr.y = e.clientY - r.top;
+        hero.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+        hero.style.setProperty('--my', (e.clientY - r.top) + 'px');
+      });
+      hero.addEventListener('pointerleave', () => { ptr.x = ptr.y = -1e5; });
+      new IntersectionObserver(es => es.forEach(en => { running = en.isIntersecting; play(); })).observe(hero);
+      document.addEventListener('visibilitychange', play);
+      play();
+    })();
+
+    /* ─── 自定义光标 + 磁吸（仅精确指针）─── */
+    if (finePtr && !reduced) {
+      document.documentElement.classList.add('cursor-on');
+      const dot = $('.cursor-dot'), ring = $('.cursor-ring');
+      let mx = -100, my = -100, rx = -100, ry = -100;
+      addEventListener('pointermove', e => {
+        mx = e.clientX; my = e.clientY;
+        dot.style.transform = `translate(${mx}px, ${my}px)`;
+      });
+      (function loop() {
+        rx += (mx - rx) * 0.16; ry += (my - ry) * 0.16;
+        ring.style.transform = `translate(${rx}px, ${ry}px)`;
+        requestAnimationFrame(loop);
+      })();
+      document.addEventListener('pointerover', e => {
+        const view = e.target.closest('.work, .m-card, .about-fig');
+        const hov  = e.target.closest('a, button, input, select, textarea');
+        ring.classList.toggle('is-view', !!view);
+        ring.classList.toggle('is-hover', !view && !!hov);
+      });
+      $$('.magnet').forEach(el => {
+        el.addEventListener('pointermove', e => {
+          const r = el.getBoundingClientRect();
+          const dx = e.clientX - (r.left + r.width / 2), dy = e.clientY - (r.top + r.height / 2);
+          el.style.transform = `translate(${dx * 0.22}px, ${dy * 0.22}px)`;
+        });
+        el.addEventListener('pointerleave', () => { el.style.transform = ''; });
+      });
+    }
+
+    /* ─── 唱片播放器 · 默认开启 / 20% 音量 / 淡入淡出 / 可拖动 ─── */
+    (function initPlayer() {
+      const TRACKS = [
+        { name: '光に寄せて', src: 'music/光に寄せて_96k.mp3' },
+        { name: '青山绿野 · 渡边雅二', src: 'music/渡边雅二 - 青山绿野.mp3' },
+      ];
+      const btn = $('#player'), panel = $('#playerPanel');
+      if (!btn || !panel) return;
+      const titleEl = $('#ppTitle'), listEl = $('#ppTracks'), volEl = $('#ppVol'), volVal = $('#ppVolVal'), toggleBtn = $('#ppToggle');
+      const M = 12; /* 四周安全边距，按钮与面板都不越过视口 */
+      const store = {
+        get(k, d) { try { const v = localStorage.getItem(k); return v === null ? d : v; } catch { return d; } },
+        set(k, v) { try { localStorage.setItem(k, v); } catch { /* 隐私模式忽略 */ } },
+      };
+
+      let volTarget = Number(store.get('kcs-vol', 0.2));
+      if (!isFinite(volTarget) || volTarget < 0 || volTarget > 1) volTarget = 0.2;
+      let idx = Number(store.get('kcs-track', 0));
+      if (!isFinite(idx) || idx < 0 || idx >= TRACKS.length) idx = 0;
+
+      const audio = new Audio();
+      audio.loop = true; audio.preload = 'auto'; audio.volume = 0;
+      let loadedIdx = -1, wantPlay = false, playing = false, fadeTimer = null, retryArmed = false;
+
+      volEl.value = Math.round(volTarget * 100);
+      volVal.textContent = Math.round(volTarget * 100) + '%';
+
+      function fadeTo(target, dur, done) {
+        if (reduced || dur <= 0) { audio.volume = target; if (done) done(); return; }
+        cancelAnimationFrame(fadeTimer);
+        const from = audio.volume, t0 = performance.now();
+        const step = now => {
+          const k = Math.min(1, (now - t0) / dur);
+          const e = k < 0.5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2;
+          audio.volume = Math.max(0, Math.min(1, from + (target - from) * e));
+          if (k < 1) fadeTimer = requestAnimationFrame(step);
+          else if (done) done();
+        };
+        fadeTimer = requestAnimationFrame(step);
+      }
+      function setUI() {
+        btn.classList.toggle('playing', playing);
+        btn.setAttribute('aria-label', playing ? '暂停音乐' : '播放音乐');
+        if (toggleBtn) {
+          toggleBtn.textContent = playing ? '暂停' : '播放';
+          toggleBtn.setAttribute('aria-label', playing ? '暂停音乐' : '播放音乐');
+        }
+        titleEl.textContent = TRACKS[idx].name;
+        $$('.pp-track', listEl).forEach((el, i) => {
+          el.classList.toggle('is-active', i === idx);
+          el.classList.toggle('is-playing', playing && i === idx);
+        });
+      }
+      function armRetry(on) {
+        if (on === retryArmed) return;
+        retryArmed = on;
+        if (on) document.addEventListener('pointerdown', start, { capture: true });
+        else document.removeEventListener('pointerdown', start, { capture: true });
+      }
+      function start() {
+        if (playing) { armRetry(false); return; }
+        wantPlay = true;
+        if (loadedIdx !== idx) { audio.src = TRACKS[idx].src; loadedIdx = idx; }
+        audio.play().then(() => {
+          playing = true; setUI(); armRetry(false);
+          fadeTo(volTarget, 1400); /* 淡入 */
+        }).catch(() => armRetry(true)); /* 浏览器拦截自动播放：等待访客第一次点击后自动开始 */
+      }
+      function stop() {
+        wantPlay = false;
+        if (!playing) return;
+        playing = false; setUI();
+        fadeTo(0, 500, () => { if (!wantPlay) audio.pause(); }); /* 淡出后暂停 */
+      }
+      function switchTo(i) {
+        if (i === idx) { if (!playing) start(); return; }
+        idx = i; store.set('kcs-track', String(idx));
+        const swap = () => {
+          audio.src = TRACKS[idx].src; loadedIdx = idx;
+          if (wantPlay) audio.play().then(() => { playing = true; setUI(); fadeTo(volTarget, 900); }).catch(() => {});
+          else setUI();
+        };
+        if (playing) fadeTo(0, 450, swap); else swap();
+        setUI();
+      }
+
+      listEl.innerHTML = TRACKS.map((t, i) =>
+        `<li><button class="pp-track" data-i="${i}" aria-label="播放 ${t.name}"><span class="pp-dot" aria-hidden="true"></span><span>${t.name}</span><span class="eq" aria-hidden="true"><span></span><span></span><span></span></span></button></li>`
+      ).join('');
+      listEl.addEventListener('click', e => {
+        const b = e.target.closest('.pp-track');
+        if (b) switchTo(Number(b.dataset.i));
+      });
+      volEl.addEventListener('input', () => {
+        volTarget = Number(volEl.value) / 100;
+        volVal.textContent = volEl.value + '%';
+        store.set('kcs-vol', String(volTarget));
+        if (playing) fadeTo(volTarget, 150);
+      });
+      if (toggleBtn) toggleBtn.addEventListener('click', () => { if (playing) stop(); else start(); });
+
+      /* 面板开合：靠锚定唱片定位，并整体钳制在视口内，绝不截断 */
+      let open = false;
+      function placePanel() {
+        const br = btn.getBoundingClientRect();
+        const pw = panel.offsetWidth, ph = panel.offsetHeight, GAP = 14;
+        let x = br.left + br.width / 2 - pw / 2;
+        let y = br.top - ph - GAP;
+        if (y < M) y = br.top + br.height + GAP; /* 上方放不下 → 翻到下方 */
+        x = Math.max(M, Math.min(x, innerWidth - pw - M));
+        y = Math.max(M, Math.min(y, innerHeight - ph - M));
+        panel.style.left = Math.round(x) + 'px';
+        panel.style.top = Math.round(y) + 'px';
+      }
+      function setOpen(v) {
+        open = v;
+        panel.classList.toggle('open', v);
+        btn.setAttribute('aria-expanded', String(v));
+        if (v) placePanel();
+      }
+
+      /* 拖动（位移超过 6px 判定为拖动，否则算点击开合面板） */
+      function clampBtn(x, y) {
+        x = Math.max(M, Math.min(x, innerWidth - btn.offsetWidth - M));
+        y = Math.max(M, Math.min(y, innerHeight - btn.offsetHeight - M));
+        btn.style.left = Math.round(x) + 'px';
+        btn.style.top = Math.round(y) + 'px';
+      }
+      (function initPos() {
+        const saved = store.get('kcs-pos', null);
+        let x, y;
+        if (saved) { const p = saved.split(','); x = Number(p[0]); y = Number(p[1]); }
+        if (!isFinite(x) || !isFinite(y)) {
+          x = innerWidth - btn.offsetWidth - 20;
+          y = innerHeight - btn.offsetHeight - 24;
+        }
+        clampBtn(x, y);
+      })();
+      let pid = null, sx = 0, sy = 0, bx = 0, by = 0, dragging = false;
+      btn.addEventListener('pointerdown', e => {
+        pid = e.pointerId;
+        try { btn.setPointerCapture(pid); } catch { /* 忽略 */ }
+        sx = e.clientX; sy = e.clientY;
+        const r = btn.getBoundingClientRect(); bx = r.left; by = r.top;
+        dragging = false;
+      });
+      btn.addEventListener('pointermove', e => {
+        if (pid === null || e.pointerId !== pid) return;
+        const dx = e.clientX - sx, dy = e.clientY - sy;
+        if (!dragging && Math.hypot(dx, dy) < 6) return;
+        dragging = true;
+        clampBtn(bx + dx, by + dy);
+        if (open) placePanel();
+      });
+      btn.addEventListener('pointerup', e => {
+        if (pid === null || e.pointerId !== pid) return;
+        try { btn.releasePointerCapture(pid); } catch { /* 忽略 */ }
+        pid = null;
+        if (dragging) {
+          dragging = false;
+          store.set('kcs-pos', btn.style.left + ',' + btn.style.top);
+        } else setOpen(!open);
+      });
+      btn.addEventListener('pointercancel', () => { pid = null; dragging = false; });
+
+      document.addEventListener('pointerdown', e => {
+        if (open && !panel.contains(e.target) && !btn.contains(e.target)) setOpen(false);
+      });
+      document.addEventListener('keydown', e => { if (e.key === 'Escape' && open) setOpen(false); });
+      addEventListener('resize', () => {
+        clampBtn(parseFloat(btn.style.left) || 0, parseFloat(btn.style.top) || 0);
+        if (open) placePanel();
+      });
+
+      setUI();
+      start(); /* 默认开启：被拦截时，访客任意一次点击页面后自动淡入 */
+    })();
+
+    $('#yr').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
